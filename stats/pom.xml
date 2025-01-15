@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>ru.practicum.stat</groupId>
-    <artifactId>statistics</artifactId>
+    <artifactId>stats</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
