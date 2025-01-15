@@ -18,14 +18,11 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class StatisticsClient {
-
-    private final static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     protected final RestTemplate restTemplate;
 
@@ -54,7 +51,6 @@ public class StatisticsClient {
     }
 
     public ResponseEntity<Object> getRecords(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
-//        String uri = restTemplate.getUriTemplateHandler();
         Map<String, Object> parameters = Map.of(
                 "start", start,
                 "end", end,
