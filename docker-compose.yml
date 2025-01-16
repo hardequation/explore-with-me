@@ -1,6 +1,6 @@
 services:
   stats-server:
-    build: stats
+    build: stats/server
     image: stats-server
     container_name: stats-server
     ports:
@@ -8,7 +8,7 @@ services:
     depends_on:
       - stats-db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/stats
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/statsdb
       - STATS-SERVER_URL=http://stats-server:9090
 
   stats-db:
@@ -19,7 +19,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=password
       - POSTGRES_USER=user
-      - POSTGRES_DB=exploredb
+      - POSTGRES_DB=statsdb
     healthcheck:
       test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
       timeout: 5s
@@ -36,7 +36,7 @@ services:
       - ewm-db
       - stats-db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5433/ewm
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5433/ewmdb
       - STATS-SERVER_URL=http://stats-server:9090
 
   ewm-db:
@@ -45,6 +45,6 @@ services:
     ports:
       - "5433:5433"
     environment:
-      - POSTGRES_DB=ewm
-      - POSTGRES_USER=postgres
+      - POSTGRES_DB=ewmdb
+      - POSTGRES_USER=user
       - POSTGRES_PASSWORD=postgres
