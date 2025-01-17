@@ -9,17 +9,20 @@ services:
       - stats-db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://stats-db:5432/statsdb
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
       - STATS-SERVER_URL=http://stats-server:9090
 
   stats-db:
     image: postgres:16.1
     container_name: stats-db
     ports:
-      - "5432:5432"
+      - "6540:5432"
     environment:
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_USER=user
       - POSTGRES_DB=statsdb
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+
     healthcheck:
       test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
       timeout: 5s
@@ -37,14 +40,21 @@ services:
       - stats-db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5433/ewmdb
+      - SPRING_DATASOURCE_USERNAME=user
+      - SPRING_DATASOURCE_PASSWORD=password
       - STATS-SERVER_URL=http://stats-server:9090
 
   ewm-db:
     image: postgres:16.1
     container_name: ewm-db
     ports:
-      - "5433:5433"
+      - "6541:5432"
     environment:
       - POSTGRES_DB=ewmdb
       - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_PASSWORD=password
+    healthcheck:
+      test: pg_isready -q -d $$POSTGRES_DB -U $$POSTGRES_USER
+      timeout: 5s
+      interval: 5s
+      retries: 10

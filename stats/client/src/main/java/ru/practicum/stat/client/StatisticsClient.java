@@ -27,8 +27,6 @@ public class StatisticsClient {
 
     private final RestTemplate restTemplate;
 
-    private final String serverUrl;
-
     @Autowired
     public StatisticsClient(
             @Value("${stats-server.url}") String serverUrl,
@@ -37,7 +35,6 @@ public class StatisticsClient {
                 .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl))
                 .requestFactory(() -> new HttpComponentsClientHttpRequestFactory())
                 .build();
-        this.serverUrl = serverUrl;
     }
 
     public List<ViewStatsDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
@@ -48,8 +45,7 @@ public class StatisticsClient {
                 "unique", unique
         );
 
-        ResponseEntity<String> response = restTemplate.getForEntity(
-                serverUrl + "/stats?start={start}&end={end}&uris={uris}&unique={unique}", String.class, parameters);
+        ResponseEntity<String> response = restTemplate.getForEntity("/stats?start={start}&end={end}&uris={uris}&unique={unique}", String.class, parameters);
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
@@ -61,7 +57,7 @@ public class StatisticsClient {
 
     public void createRecord(CreateEndpointHitDto dto) {
         HttpEntity<CreateEndpointHitDto> requestEntity = new HttpEntity<>(dto, defaultHeaders());
-        restTemplate.exchange(serverUrl + "/hit", HttpMethod.POST, requestEntity, CreateEndpointHitDto.class);
+        restTemplate.exchange( "/hit", HttpMethod.POST, requestEntity, CreateEndpointHitDto.class);
     }
 
     private HttpHeaders defaultHeaders() {
