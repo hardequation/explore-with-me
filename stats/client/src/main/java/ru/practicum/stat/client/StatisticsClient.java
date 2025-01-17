@@ -57,7 +57,7 @@ public class StatisticsClient {
 
     public void createRecord(CreateEndpointHitDto dto) {
         HttpEntity<CreateEndpointHitDto> requestEntity = new HttpEntity<>(dto, defaultHeaders());
-        restTemplate.exchange( "/hit", HttpMethod.POST, requestEntity, CreateEndpointHitDto.class);
+        restTemplate.exchange("/hit", HttpMethod.POST, requestEntity, CreateEndpointHitDto.class);
     }
 
     private HttpHeaders defaultHeaders() {
