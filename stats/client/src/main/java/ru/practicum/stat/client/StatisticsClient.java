@@ -39,7 +39,7 @@ public class StatisticsClient {
                 .build();
     }
 
-    public List<ViewStatsDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
+    public List<ViewStatsDto> getStats(String start, String end, List<String> uris, boolean unique) {
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("start", start);

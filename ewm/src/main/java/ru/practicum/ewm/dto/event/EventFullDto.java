@@ -21,6 +21,7 @@ public class EventFullDto {
 
     private Integer confirmedRequests;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdOn;
 
     private LocalDateTime publishedOn;

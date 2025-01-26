@@ -28,7 +28,7 @@ public class StatisticsService {
         statClient.createRecord(requestDto);
     }
 
-    public List<ViewStatsDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
+    public List<ViewStatsDto> getStats(String start, String end, List<String> uris, boolean unique) {
         return statClient.getStats(start, end, uris, unique);
     }
 

@@ -17,6 +17,7 @@ import ru.practicum.ewm.service.EventService;
 import ru.practicum.ewm.service.StatisticsService;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,6 +28,8 @@ import static ru.practicum.ewm.utils.Constants.MAIN_SERVICE;
 @RequestMapping(path = "/events")
 @RequiredArgsConstructor
 public class PublicEventController {
+
+    private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
 
     private final EventService eventService;
 
@@ -63,7 +66,9 @@ public class PublicEventController {
                 .uri(request.getRequestURI())
                 .build();
         statService.sendStat(statEvent, request);
-        int views = statService.getStats(event.getCreatedOn(), LocalDateTime.now(),
+        int views = statService.getStats(
+                event.getCreatedOn().format(dateFormatter),
+                LocalDateTime.now().format(dateFormatter),
                 Collections.singletonList(request.getRequestURI()), true).size();
         eventService.updateViews(id, views);
         return event;
