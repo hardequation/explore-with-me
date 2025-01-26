@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.stat.dto.CreateEndpointHitDto;
 import ru.practicum.stat.dto.EndpointHitDto;
+import ru.practicum.stat.server.exception.ConditionException;
 import ru.practicum.stat.server.mapper.EndpointHitMapper;
 import ru.practicum.stat.server.model.EndpointHit;
 import ru.practicum.stat.server.model.ViewStats;
@@ -27,6 +28,9 @@ public class StatsService {
     }
 
     public List<ViewStats> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
+        if (start.isAfter(end)) {
+            throw new ConditionException("Start time should be after end time");
+        }
         if (uris != null && !uris.isEmpty()) {
             return hitRepository.findStatsByUris(start, end, uris, unique);
         }
