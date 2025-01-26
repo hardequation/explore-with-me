@@ -41,14 +41,14 @@ public class EventService {
     private final CategoryRepository categoryRepository;
 
     private final EventMapper eventMapper;
-    
+
     public List<EventFullDto> adminFindAll(List<Integer> users,
-                                            List<EventStatus> states,
-                                            List<Integer> categories,
-                                            LocalDateTime rangeStart,
-                                            LocalDateTime rangeEnd,
-                                            int from,
-                                            int size) {
+                                           List<EventStatus> states,
+                                           List<Integer> categories,
+                                           LocalDateTime rangeStart,
+                                           LocalDateTime rangeEnd,
+                                           int from,
+                                           int size) {
 
         Pageable pageable = PageRequest.of(from / size, size);
         return eventRepository.findFilteredEvents(users, states, categories, rangeStart, rangeEnd, pageable).stream()
@@ -57,14 +57,14 @@ public class EventService {
     }
 
     public List<EventShortDto> findFilteredEvents(String text,
-                                       List<Integer> categories,
-                                       Boolean paid,
-                                       LocalDateTime rangeStart,
-                                       LocalDateTime rangeEnd,
-                                       boolean onlyAvailable,
-                                       String sort,
-                                       int from,
-                                       int size) {
+                                                  List<Integer> categories,
+                                                  Boolean paid,
+                                                  LocalDateTime rangeStart,
+                                                  LocalDateTime rangeEnd,
+                                                  boolean onlyAvailable,
+                                                  String sort,
+                                                  int from,
+                                                  int size) {
         if (rangeStart == null) {
             rangeStart = LocalDateTime.now();
         }
@@ -133,8 +133,6 @@ public class EventService {
         if (event.getState() == PUBLISHED) {
             throw new ValidationException("Unable to update already published event " + eventId);
         }
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(USER_NOT_FOUND + userId));
         int categoryId = event.getCategory().getId();
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new NotFoundException(CATEGORY_NOT_FOUND + categoryId));
@@ -161,8 +159,8 @@ public class EventService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException(EVENT_NOT_FOUND + eventId));
         if (request.getStateAction() != null && (
-            (request.getStateAction().equals(AdminStateAction.PUBLISH_EVENT) && !event.getState().equals(EventStatus.PENDING)) ||
-            (request.getStateAction().equals(AdminStateAction.REJECT_EVENT) && event.getState().equals(PUBLISHED)))) {
+                (request.getStateAction().equals(AdminStateAction.PUBLISH_EVENT) && !event.getState().equals(EventStatus.PENDING)) ||
+                        (request.getStateAction().equals(AdminStateAction.REJECT_EVENT) && event.getState().equals(PUBLISHED)))) {
             throw new ValidationException("Cannot publish the event because it's not in the right state: " + event.getState());
         }
 

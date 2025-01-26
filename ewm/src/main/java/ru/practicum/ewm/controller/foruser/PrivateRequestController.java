@@ -40,7 +40,7 @@ public class PrivateRequestController {
         statService.sendStat(statEvent, request);
         return requestService.getRequestsByUserId(userId);
     }
-    
+
     @PostMapping("/{userId}/requests")
     @ResponseStatus(HttpStatus.CREATED)
     public ParticipationRequestDto addParticipationRequest(
@@ -54,7 +54,7 @@ public class PrivateRequestController {
         statService.sendStat(statEvent, request);
         return requestService.createParticipationRequest(userId, eventId);
     }
-    
+
     @PatchMapping("/{userId}/requests/{requestId}/cancel")
     @ResponseStatus(HttpStatus.OK)
     public ParticipationRequestDto cancelRequest(

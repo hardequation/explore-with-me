@@ -27,8 +27,8 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
 
     public List<CategoryDto> findAll() {
-        List<Category> Categorys = categoryRepository.findAll();
-        return Categorys.stream()
+        List<Category> categories = categoryRepository.findAll();
+        return categories.stream()
                 .map(categoryMapper::map)
                 .toList();
     }
@@ -39,8 +39,8 @@ public class CategoryService {
     }
 
     public CategoryDto findById(int id) {
-        Category Category = categoryRepository.findById(id).orElseThrow(() -> new NotFoundException(CATEGORY_NOT_FOUND + id));
-        return categoryMapper.map(Category);
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new NotFoundException(CATEGORY_NOT_FOUND + id));
+        return categoryMapper.map(category);
     }
 
     public CategoryDto add(NewCategoryDto dto) {

@@ -31,14 +31,14 @@ public class RequestService {
     private final EventRepository eventRepository;
 
     private final ParticipationRequestMapper requestMapper;
-    
+
     public List<ParticipationRequestDto> getRequestsByUserId(int userId) {
         return requestRepository.findByRequesterId(userId)
                 .stream()
                 .map(requestMapper::map)
                 .toList();
     }
-    
+
     public ParticipationRequestDto createParticipationRequest(int userId, int eventId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException(EVENT_NOT_FOUND + eventId));
@@ -71,10 +71,10 @@ public class RequestService {
         }
 
         ParticipationRequest request = ParticipationRequest.builder()
-                        .requesterId(userId)
-                        .eventId(eventId)
-                        .status(status)
-                        .build();
+                .requesterId(userId)
+                .eventId(eventId)
+                .status(status)
+                .build();
 
         ParticipationRequest savedRequest = requestRepository.save(request);
         return requestMapper.map(savedRequest);
