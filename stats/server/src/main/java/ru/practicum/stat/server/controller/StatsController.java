@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.stat.dto.CreateEndpointHitDto;
+import ru.practicum.stat.dto.EndpointHitDto;
 import ru.practicum.stat.server.model.ViewStats;
 import ru.practicum.stat.server.service.StatsService;
 
@@ -28,16 +29,16 @@ public class StatsController {
 
     @PostMapping("/hit")
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveHit(@RequestBody CreateEndpointHitDto hit) {
+    public EndpointHitDto saveHit(@RequestBody CreateEndpointHitDto hit) {
         log.info("Saving hit: " + hit.getUri());
-        statsService.saveHit(hit);
+        return statsService.saveHit(hit);
     }
 
 
     @GetMapping("/stats")
     public List<ViewStats> getStats(
-            @RequestParam @DateTimeFormat(pattern = DATE_TIME_FORMAT) LocalDateTime start,
-            @RequestParam @DateTimeFormat(pattern = DATE_TIME_FORMAT) LocalDateTime end,
+            @RequestParam(required = false) @DateTimeFormat(pattern = DATE_TIME_FORMAT) LocalDateTime start,
+            @RequestParam(required = false) @DateTimeFormat(pattern = DATE_TIME_FORMAT) LocalDateTime end,
             @RequestParam(required = false) List<String> uris,
             @RequestParam(required = false, defaultValue = "false") boolean unique) {
         log.info("Fetching stats from {} to {}, URIs: {}, Unique: {}", start, end, uris, unique);

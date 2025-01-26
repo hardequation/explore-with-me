@@ -15,10 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.stat.dto.CreateEndpointHitDto;
+import ru.practicum.stat.dto.EndpointHitDto;
 import ru.practicum.stat.dto.ViewStatsDto;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,12 +40,12 @@ public class StatisticsClient {
     }
 
     public List<ViewStatsDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
-        Map<String, Object> parameters = Map.of(
-                "start", start,
-                "end", end,
-                "uris", uris == null ? "" : String.join(",", uris),
-                "unique", unique
-        );
+
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("start", start);
+        parameters.put("end", end);
+        parameters.put("uris", uris == null ? "" : String.join(",", uris));
+        parameters.put("unique", unique);
 
         ResponseEntity<String> response = restTemplate.getForEntity("/stats?start={start}&end={end}&uris={uris}&unique={unique}", String.class, parameters);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -57,7 +59,7 @@ public class StatisticsClient {
 
     public void createRecord(CreateEndpointHitDto dto) {
         HttpEntity<CreateEndpointHitDto> requestEntity = new HttpEntity<>(dto, defaultHeaders());
-        restTemplate.exchange("/hit", HttpMethod.POST, requestEntity, CreateEndpointHitDto.class);
+        restTemplate.exchange("/hit", HttpMethod.POST, requestEntity, EndpointHitDto.class);
     }
 
     private HttpHeaders defaultHeaders() {
