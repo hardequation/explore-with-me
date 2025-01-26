@@ -115,7 +115,7 @@ public class EventMapper {
                 .eventDate(uEvent.getEventDate() != null ? uEvent.getEventDate() : event.getEventDate())
                 .initiator(event.getInitiator())
                 .location(uEvent.getLocation() != null ? uEvent.getLocation() : event.getLocation())
-                .paid(event.getPaid())
+                .paid(uEvent.getPaid() != null ? uEvent.getPaid() : event.getPaid())
                 .participantLimit(uEvent.getParticipantLimit() != null ? uEvent.getParticipantLimit() : event.getParticipantLimit())
                 .requestModeration(uEvent.getRequestModeration() != null ? uEvent.getRequestModeration() : event.isRequestModeration())
                 .state(state)
