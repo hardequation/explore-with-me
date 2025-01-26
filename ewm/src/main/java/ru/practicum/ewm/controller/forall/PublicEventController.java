@@ -57,13 +57,15 @@ public class PublicEventController {
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public EventFullDto getEventById(@PathVariable int id, HttpServletRequest request) {
+        EventFullDto event = eventService.findPublishedEventById(id);
         StatEvent statEvent = StatEvent.builder()
                 .serviceName(MAIN_SERVICE)
                 .uri(request.getRequestURI())
                 .build();
         statService.sendStat(statEvent, request);
-        int views = statService.getStats(null, null,
+        int views = statService.getStats(event.getCreatedOn(), LocalDateTime.now(),
                 Collections.singletonList(request.getRequestURI()), true).size();
-        return eventService.findPublishedEventById(id, views);
+        eventService.updateViews(id, views);
+        return event;
     }
 }

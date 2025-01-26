@@ -91,13 +91,17 @@ public class EventService {
         return eventMapper.mapToFull(event);
     }
 
-    public EventFullDto findPublishedEventById(int eventId, int views) {
+    public EventFullDto findPublishedEventById(int eventId) {
         Event event = eventRepository.findByIdAndState(eventId, PUBLISHED)
                 .orElseThrow(() -> new NotFoundException(EVENT_NOT_FOUND + eventId));
-        EventFullDto result = eventMapper.mapToFull(event);
+        return eventMapper.mapToFull(event);
+    }
+
+    public void updateViews(int eventId, int views) {
+        Event event = eventRepository.findByIdAndState(eventId, PUBLISHED)
+                .orElseThrow(() -> new NotFoundException(EVENT_NOT_FOUND + eventId));
         event.setViews(views);
         eventRepository.save(event);
-        return result;
     }
 
     public EventFullDto add(int initiatorId, NewEventDto dto) {
