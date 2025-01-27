@@ -141,7 +141,7 @@ public class RequestService {
 
             req.setStatus(RequestStatus.CONFIRMED);
             result.getConfirmedRequests().add(requestMapper.map(req));
-            requestRepository.save(req);
+
             i++;
         }
 
@@ -149,8 +149,9 @@ public class RequestService {
             ParticipationRequest req = reqs.get(j);
             req.setStatus(RequestStatus.REJECTED);
             result.getRejectedRequests().add(requestMapper.map(req));
-            requestRepository.save(req);
         }
+
+        requestRepository.saveAll(reqs);
 
         return result;
     }

@@ -11,6 +11,7 @@ import ru.practicum.ewm.dto.event.EventFullDto;
 import ru.practicum.ewm.dto.event.EventShortDto;
 import ru.practicum.ewm.dto.event.NewEventDto;
 import ru.practicum.ewm.dto.request.UpdateEventAdminRequest;
+import ru.practicum.ewm.dto.request.UpdateEventRequest;
 import ru.practicum.ewm.dto.request.UpdateEventUserRequest;
 import ru.practicum.ewm.exception.ConditionException;
 import ru.practicum.ewm.exception.NotFoundException;
@@ -118,18 +119,7 @@ public class EventService {
     }
 
     public EventFullDto userUpdate(int userId, int eventId, UpdateEventUserRequest request) {
-        if (request.getAnnotation() != null && request.getAnnotation().isBlank()) {
-            throw new ValidationException("Annotation can't be blank");
-        }
-        if (request.getDescription() != null && request.getDescription().isBlank()) {
-            throw new ValidationException("Description can't be blank");
-        }
-        if (request.getTitle() != null && request.getTitle().isBlank()) {
-            throw new ValidationException("Title can't be blank");
-        }
-        if (request.getEventDate() != null) {
-            checkEventTime(request.getEventDate(), 2);
-        }
+        checkUpdateEventRequest(request, 2);
 
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException(EVENT_NOT_FOUND + eventId));
@@ -147,18 +137,7 @@ public class EventService {
     }
 
     public EventFullDto adminUpdate(int eventId, UpdateEventAdminRequest request) {
-        if (request.getAnnotation() != null && request.getAnnotation().isBlank()) {
-            throw new ValidationException("Annotation can't be blank");
-        }
-        if (request.getDescription() != null && request.getDescription().isBlank()) {
-            throw new ValidationException("Description can't be blank");
-        }
-        if (request.getTitle() != null && request.getTitle().isBlank()) {
-            throw new ValidationException("Title can't be blank");
-        }
-        if (request.getEventDate() != null) {
-            checkEventTime(request.getEventDate(), 1);
-        }
+        checkUpdateEventRequest(request, 1);
 
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new NotFoundException(EVENT_NOT_FOUND + eventId));
@@ -182,6 +161,21 @@ public class EventService {
         if (eventTime.isBefore(LocalDateTime.now().plusHours(minHoursBeforeEvent))) {
             throw new ConditionException("Too late to create event, should be at least "
                     + minHoursBeforeEvent + " before event");
+        }
+    }
+
+    private void checkUpdateEventRequest(UpdateEventRequest request, int minHoursBeforeEvent) {
+        if (request.getAnnotation() != null && request.getAnnotation().isBlank()) {
+            throw new ValidationException("Annotation can't be blank");
+        }
+        if (request.getDescription() != null && request.getDescription().isBlank()) {
+            throw new ValidationException("Description can't be blank");
+        }
+        if (request.getTitle() != null && request.getTitle().isBlank()) {
+            throw new ValidationException("Title can't be blank");
+        }
+        if (request.getEventDate() != null) {
+            checkEventTime(request.getEventDate(), minHoursBeforeEvent);
         }
     }
 }
