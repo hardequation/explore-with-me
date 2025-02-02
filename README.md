@@ -1,2 +1,2 @@
 # java-explore-with-me
-Template repository for ExploreWithMe project.
+Link to the PR: https://github.com/hardequation/explore-with-me/pull/3
