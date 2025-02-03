@@ -22,21 +22,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User save(User request);
 
-//    @Query("""
-//        SELECT u, COUNT(s2.id.userId) AS commonSubscribersCount
-//        FROM UserShort u
-//        JOIN Subscription s1 ON s1.id.subscriberId = u.id
-//        JOIN Subscription s2 ON s2.id.userId = s1.id.userId
-//        WHERE s2.id.subscriberId = :userId
-//        AND u.id <> :userId
-//        AND u.id NOT IN (
-//            SELECT s3.id.subscriberId FROM Subscription s3 WHERE s3.id.userId = :userId
-//        )
-//        GROUP BY u.id
-//        ORDER BY commonSubscribersCount DESC
-//    """)
-//    List<UserShort> getRecommendations(int userId);
-
     @Query("""
                 SELECT u
                 FROM UserShort u
