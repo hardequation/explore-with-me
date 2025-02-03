@@ -900,8 +900,8 @@
 									"const subscriberId = pm.collectionVariables.get('subscriberId');",
 									"",
 									"pm.test(\"Пользователь должен быть найден до выполнения запроса\", function() {",
-									"    pm.expect(createdSubscription.userId).to.eql(userId);",
-									"    pm.expect(createdSubscription.subscriberId).to.eql(subscriberId);",
+									"    pm.expect(createdSubscription.userId).to.eql(Number(userId));",
+									"    pm.expect(createdSubscription.subscriberId).to.eql(Number(subscriberId));",
 									"});",
 									"",
 									"const req = {",
@@ -1606,6 +1606,11 @@
 		}
 	],
 	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
 		{
 			"key": "userId",
 			"value": "1",
