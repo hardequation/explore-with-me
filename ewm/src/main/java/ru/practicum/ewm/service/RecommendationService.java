@@ -3,7 +3,6 @@ package ru.practicum.ewm.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewm.dal.EventRepository;
-import ru.practicum.ewm.dal.SubscriptionRepository;
 import ru.practicum.ewm.dal.UserRepository;
 import ru.practicum.ewm.dto.event.EventShortDto;
 import ru.practicum.ewm.dto.user.UserShortDto;
