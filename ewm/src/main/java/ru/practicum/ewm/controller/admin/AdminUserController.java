@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.ewm.dto.user.NewUserRequest;
 import ru.practicum.ewm.dto.user.UserDto;
+import ru.practicum.ewm.model.AllowedSubscriberGroup;
 import ru.practicum.ewm.model.StatEvent;
 import ru.practicum.ewm.service.StatisticsService;
 import ru.practicum.ewm.service.UserService;
@@ -58,7 +59,7 @@ public class AdminUserController {
         return userService.findById(id);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/activate/{id}")
     @ResponseStatus(HttpStatus.OK)
     public boolean activateUser(@PathVariable int id, HttpServletRequest request) {
         StatEvent statEvent = StatEvent.builder()
@@ -68,6 +69,14 @@ public class AdminUserController {
         statService.sendStat(statEvent, request);
         return userService.activate(id);
     }
+
+    @PostMapping("/subscriber/group/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public boolean changeSubscriberGroup(@PathVariable int id,
+                                         @RequestParam(defaultValue = "ALL", required = false) AllowedSubscriberGroup subscriberGroup) {
+        return userService.changeSubscriberGroup(id, subscriberGroup);
+    }
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
